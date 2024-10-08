@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Ground
+  - enemy
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - background
+  - Water
+  - UI
+  - map
+  - Player
+  - ememy
+  - Sword
+  - Inventroy
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: background
+    uniqueID: 2847272359
+    locked: 0
+  - name: enemy
+    uniqueID: 2533919303
+    locked: 0
+  - name: Player
+    uniqueID: 2671229755
+    locked: 0
+  - name: map
+    uniqueID: 3288276769
+    locked: 0
+  - name: Inventory
+    uniqueID: 1024422375
+    locked: 0

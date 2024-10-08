@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5a9ead545727414cb7773240de45357, type: 3}
+  m_Name: Heal_Flask
+  m_EditorClassIdentifier: 
+  itemname: Heal_Flask
+  icon: {fileID: 1206954855, guid: be55291aae08d434db3da3b59db3ab4a, type: 3}
+  itemtype: 1
+  dropchance: 36
+  equirmenttype: 3
+  Strength: 0
+  agality: 0
+  intelligence: 0
+  vatility: 0
+  armor: 0
+  evasion: 0
+  Damage: 0
+  critchance: 0
+  critPower: 0
+  MagicResistence: 0
+  fireDamage: 0
+  iceDamage: 0
+  lightDamage: 0
+  stat: {fileID: 0}
+  itemeffect:
+  - {fileID: 11400000, guid: 096147e951b6011489d0d963a0b89133, type: 2}
+  cooldown: 4
+  DescriptionLnegth: 0
