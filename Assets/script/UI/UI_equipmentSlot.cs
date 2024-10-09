@@ -17,6 +17,7 @@ public class UI_equipmentSlot : UIitemSlot
             return;
         Inventory.Instance.UnequirItem(items.data as ItemData_equirment);
         Inventory.Instance.Additem(items.data as ItemData_equirment);
+        uI.itemtip.HideTip();
         CleanUpSlot();
 
     }

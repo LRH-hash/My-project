@@ -11,6 +11,7 @@ public class UI : MonoBehaviour
     public GameObject Craft;
     public GameObject option;
     public UI_CraftWindow CraftWindow;
+    public UI_SkillTooltip skilltooltip;
     private void Start()
     {
         SwitchTo(null);
@@ -52,6 +53,7 @@ public class UI : MonoBehaviour
         if(_menu!=null&&_menu.activeSelf)
         {
             _menu.SetActive(false);
+            itemtip.HideTip();
             return;
         }
         SwitchTo(_menu);

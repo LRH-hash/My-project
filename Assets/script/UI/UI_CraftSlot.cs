@@ -15,8 +15,6 @@ public class UI_CraftSlot :UIitemSlot
         items.data = _data;
         Itemimage.sprite = _data.icon;
         itemtext.text = _data.name;
-
-
     }
     private void OnValidate()
     {
@@ -26,5 +24,9 @@ public class UI_CraftSlot :UIitemSlot
     public override void OnPointerDown(PointerEventData eventData)
     {
         uI.CraftWindow.SetUpCraftWIndow(items.data as ItemData_equirment);
+    }
+    public override void OnPointerEnter(PointerEventData eventData)
+    {
+
     }
 }

@@ -41,8 +41,6 @@ public class UI_CraftWindow : MonoBehaviour
         itemIcon.sprite = _data.icon;
         itemName.text = _data.itemname;
         itemDescription.text = _data.GetDescription();
-
-        Debug.Log(1);
         craftButton.onClick.AddListener(() => Inventory.Instance.CanCraft(_data, _data.CraftingMaterial));
     }
 }

@@ -34,3 +34,7 @@ MonoBehaviour:
   itemeffect:
   - {fileID: 11400000, guid: 3d1befbfd0cb41148b9ecad70edb7d90, type: 2}
   cooldown: 4
+  DescriptionLnegth: 0
+  CraftingMaterial:
+  - data: {fileID: 11400000, guid: 6d40705f3bf3b3a44810e730023b507c, type: 2}
+    StackSizes: 1

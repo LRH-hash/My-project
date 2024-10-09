@@ -55,7 +55,7 @@ using UnityEngine.EventSystems;
         Itemimage.sprite = null;
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
+    public virtual void OnPointerEnter(PointerEventData eventData)
     {
         if (items == null)
             return;

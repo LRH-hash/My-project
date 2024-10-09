@@ -32,7 +32,7 @@ public class blackholeState : PlayerState
         base.Update();
         if(statetimer>0)
         {
-            rb.velocity = new Vector2(0, 10);
+            rb.velocity = new Vector2(0, 5);
         }
         if(statetimer<0)
         {

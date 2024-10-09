@@ -57,6 +57,7 @@ public class Inventory : MonoBehaviour
     {
         for (int i = 0; i < StartEquipmentLIst.Count; i++)
         {
+            if(StartEquipmentLIst[i]!=null)
             Additem(StartEquipmentLIst[i]);
         }
     }

@@ -35,3 +35,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5a8d15b6e3553fd4a901dbeb7c30b36e, type: 2}
   cooldown: 4
   DescriptionLnegth: 2
+  CraftingMaterial:
+  - data: {fileID: 11400000, guid: 6d40705f3bf3b3a44810e730023b507c, type: 2}
+    StackSizes: 2
