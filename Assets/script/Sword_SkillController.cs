@@ -36,6 +36,7 @@ public class Sword_SkillController : MonoBehaviour
     }
     void Start()
     {
+        Destroy(this.gameObject, 5);
 
     }
 
@@ -193,7 +194,7 @@ public class Sword_SkillController : MonoBehaviour
         enemy _enemy = collision.GetComponent<enemy>();
         if (_enemy != null)
         {
-            player.charactState.Dodamage(_enemy.GetComponent<CharactState>());
+            player.charactState.Dodamage(_enemy.GetComponent<CharactState>(),transform);
             _enemy.StartCoroutine("FreezeTimeEnemy", FreezeTime);
             ItemData_equirment equirment = Inventory.Instance.GetEquipment(equirmentType.Amult);
             if (equirment != null)
@@ -216,6 +217,12 @@ public class Sword_SkillController : MonoBehaviour
         cd.enabled = false;
         canRotate = false;
         anim.SetBool("Rotation", false);
+        GetComponentInChildren<ParticleSystem>().Play();
         transform.parent = collision.transform;
+    }
+    public void PierceSwitchPosition(Transform _player)
+    {
+        if(PierceMaxCount>0)
+        _player.transform.position = transform.position;
     }
 }

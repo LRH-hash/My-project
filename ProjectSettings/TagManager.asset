@@ -58,3 +58,6 @@ TagManager:
   - name: Inventory
     uniqueID: 1024422375
     locked: 0
+  - name: FX
+    uniqueID: 1503124177
+    locked: 0

@@ -7,13 +7,10 @@ public class Skill : MonoBehaviour
     public float cooldowntime;
     public float cooldowntimer;
     public Player player;
-    private void Awake()
-    {
-        player = PlayerManager.instance.player;
-    }
     public  virtual void Start()
     {
-        
+        player = PlayerManager.instance.player;
+        CheckUnlock();
     }
     public virtual void Update()
     {
@@ -27,9 +24,14 @@ public class Skill : MonoBehaviour
             cooldowntimer = cooldowntime;
             return true;
         }
+        player.fX.creatText("cooldown");
         return false;
     }
     public virtual void UseSkill()
+    {
+
+    }
+    public virtual void CheckUnlock()
     {
 
     }

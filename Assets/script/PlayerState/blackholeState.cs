@@ -33,6 +33,7 @@ public class blackholeState : PlayerState
         if(statetimer>0)
         {
             rb.velocity = new Vector2(0, 5);
+            player.fX.CreateAfterImage();
         }
         if(statetimer<0)
         {

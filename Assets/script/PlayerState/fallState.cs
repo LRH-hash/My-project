@@ -30,7 +30,7 @@ public class fallState : PlayerState
         {
             StateMachine.ChangeState(player.wallstate);
         }
-        
+        player.fX.CreateAfterImage();
     }
 
     // Start is called before the first frame update

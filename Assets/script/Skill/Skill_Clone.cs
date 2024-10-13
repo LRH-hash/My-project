@@ -40,10 +40,7 @@ public class Skill_Clone : Skill
     }
     public void CreateClonecounterAttack(Transform _transform)
     {
-        if(createCloneOnCounterattack)
-        {
             StartCoroutine("CounterAttackDelay", _transform);
-        }
     }
     public IEnumerator CounterAttackDelay(Transform _transform)
     {

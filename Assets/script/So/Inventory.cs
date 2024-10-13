@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 [SerializeField]
-public class Inventory : MonoBehaviour
+public class Inventory : MonoBehaviour,ISaveManager
 {
     public static Inventory Instance { get; private set; }
     public List<itemData>  Listitems;
@@ -22,9 +23,14 @@ public class Inventory : MonoBehaviour
     public UI_equipmentSlot[] EquipMentSlot;
     private float lastuseTime;
     private float lastUseArmorTime;
-    private float FlaskCoolDown;
+   public float FlaskCoolDown;
     private float ArmorCoolDown;
     public UI_StatSlot[] uislot;
+    //public string[] assetsNames;//NameId
+    [Header("Data base")]
+   public List<itemData> itemDataBase;//所有的equipmentData
+    public List<InventoryItem> loadedItems;
+    public List<ItemData_equirment> loadedEquipment;
     // Start is called before the first frame update
     public void Awake()
     {
@@ -55,6 +61,22 @@ public class Inventory : MonoBehaviour
     }
     public void StartEquipment()
     {
+        foreach (ItemData_equirment item in loadedEquipment)
+        {
+            EquipMent(item);
+        }
+        if (loadedItems.Count > 0)//载入文件存在才调用
+        {
+            foreach (InventoryItem item in loadedItems)
+            {
+                for (int i = 0; i < item.StackSizes; i++)
+                {
+                    Additem(item.data);
+                }
+            }
+
+            return;
+        }
         for (int i = 0; i < StartEquipmentLIst.Count; i++)
         {
             if(StartEquipmentLIst[i]!=null)
@@ -63,21 +85,21 @@ public class Inventory : MonoBehaviour
     }
     public void UpdateUi()
     {
-        for(int i=0;i<EquipMentSlot.Length;i++)
+        for (int i = 0; i < EquipMentSlot.Length; i++)
         {
             EquipMentSlot[i].CleanUpSlot();
         }
-        foreach(KeyValuePair<ItemData_equirment,InventoryItem> item in equipmentDictionary)
+        foreach (KeyValuePair<ItemData_equirment, InventoryItem> item in equipmentDictionary)
         {
-           for(int i=0;i<EquipMentSlot.Length;i++)
+            for (int i = 0; i < EquipMentSlot.Length; i++)
             {
-                if(EquipMentSlot[i].equirmenttype==item.Key.equirmenttype)
+                if (EquipMentSlot[i].equirmenttype == item.Key.equirmenttype)
                 {
                     EquipMentSlot[i].UpdateItemSlot(item.Value);
                 }
             }
         }
-        for(int i=0;i<itemSlot.Length;i++)
+        for (int i = 0; i < itemSlot.Length; i++)
         {
             itemSlot[i].CleanUpSlot();
         }
@@ -85,19 +107,25 @@ public class Inventory : MonoBehaviour
         {
             StashitemSlot[i].CleanUpSlot();
         }
-        for (int i=0;i<Inventoryitem.Count;i++)
+        for (int i = 0; i < Inventoryitem.Count; i++)
         {
             itemSlot[i].UpdateItemSlot(Inventoryitem[i]);
         }
-        for(int i=0;i<StashInventoryitem.Count;i++)
+        for (int i = 0; i < StashInventoryitem.Count; i++)
         {
             StashitemSlot[i].UpdateItemSlot(StashInventoryitem[i]);
         }
-        for(int i=0;i<uislot.Length;i++)
+        UpdateStatUI();
+    }
+
+    public void UpdateStatUI()
+    {
+        for (int i = 0; i < uislot.Length; i++)
         {
             uislot[i].UpdataStatValueString();
         }
     }
+
     public void EquipMent(itemData _item)
     {
         ItemData_equirment newequirment = _item as ItemData_equirment;
@@ -231,6 +259,7 @@ public class Inventory : MonoBehaviour
         }
         else
         {
+            PlayerManager.instance.player.fX.creatText("cooldown");
             return;
         }
     }
@@ -297,4 +326,71 @@ public class Inventory : MonoBehaviour
 
         return true;
     }
+    public void LoadData(GameData _data)
+    {
+        foreach (KeyValuePair<string, int> pair in _data.inventory)//比较文件里保存data和所有data的，相同就保存在loadedItems里
+        {
+            foreach (var item in itemDataBase)
+            {
+                if (item != null && item.itemId == pair.Key)
+                {
+                    InventoryItem itemToLoad = new InventoryItem(item);
+                    itemToLoad.StackSizes = pair.Value;//因为要保存的是两个变量故采用此方法，这也是InventoryItem存在的原因，需要保存数量
+
+                    loadedItems.Add(itemToLoad);
+                }
+            }
+        }
+
+        foreach (string loadedItemId in _data.equipmentId)
+        {
+            foreach (var item in itemDataBase)
+            {
+                if (item != null && item.itemId == loadedItemId)
+                {
+                    loadedEquipment.Add(item as ItemData_equirment);
+                }
+            }
+        }
     }
+
+    public void SaveData(ref GameData _data)
+    {
+        _data.inventory.Clear();
+        _data.equipmentId.Clear();
+
+        foreach (KeyValuePair<itemData, InventoryItem> pair in InventoryDictionary)//遍历存储
+        {
+            _data.inventory.Add(pair.Key.itemId, pair.Value.StackSizes);
+        }
+
+        foreach (KeyValuePair<itemData, InventoryItem> pair in StashInventoryDictionary)
+        {
+            _data.inventory.Add(pair.Key.itemId, pair.Value.StackSizes);
+        }
+
+        foreach (KeyValuePair<ItemData_equirment, InventoryItem> pair in equipmentDictionary)
+        {
+            _data.equipmentId.Add(pair.Key.itemId);
+        }
+    }
+    #if UNITY_EDITOR
+    [ContextMenu("fill up itemdata")]
+    public void FillupItemdatabase() => itemDataBase = new List<itemData>(GetItemDataBase());
+    private List<itemData> GetItemDataBase()//获得所有的equipmentData的IdName和data的函数
+    {
+        itemDataBase = new List<itemData>();
+        string[] assetsNames = AssetDatabase.FindAssets("", new[] { "Assets/itemData/Item" });//这是根据unity的文件夹走的，也就是拿到了所有的Equipment的文件名IdName
+        foreach (string SOName in assetsNames)
+        {
+            var SOpath = AssetDatabase.GUIDToAssetPath(SOName);//这是通过找到的文件名拿到对应的位置
+            var itemData = AssetDatabase.LoadAssetAtPath<itemData>(SOpath);//这是实打实的通过位置转换拿到相应的数据
+            itemDataBase.Add(itemData);//将数据填到itemDataBase里
+        }
+
+        return itemDataBase;
+    }
+#endif
+}
+
+

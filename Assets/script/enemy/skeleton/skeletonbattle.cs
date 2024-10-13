@@ -17,6 +17,8 @@ public class skeletonbattle : enemyState
         base.Enter();
         Player = PlayerManager.instance.player.transform;
         statetimer = skeleton.battletime;
+        if (Player.GetComponent<PlayerStats>().isDie)
+            enemyStateMachine.ChangeState(skeleton.Skeletonmove);
     }
 
     public override void Exit()

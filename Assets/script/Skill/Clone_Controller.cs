@@ -75,7 +75,7 @@ public class Clone_Controller : MonoBehaviour
         {
             if (i.GetComponent<enemy>() != null)
             {
-                PlayerManager.instance.player.charactState.Dodamage(i.GetComponent<CharactState>());
+                PlayerManager.instance.player.charactState.Dodamage(i.GetComponent<CharactState>(),transform);
                 if (canDuplicateClone)
                 {
                     if (Random.Range(0, 100) < changeDulicateClone)

@@ -39,12 +39,13 @@ public class CounterAttackState : PlayerState
                 {
                     statetimer = 10f;
                     player.anim.SetBool("successfulcounterattack", true);
-                    if (isoneclone)
+                    SkillManager.instance.parry.CanUseSkill();
+                    if(isoneclone)
                     {
-                        SkillManager.instance.clone.CreateClonecounterAttack(i.transform);
                         isoneclone = false;
-                    }
-                   player.charactState.Dodamage(i.GetComponent<CharactState>());
+                        SkillManager.instance.parry.MakeMirageOnParry(i.transform);
+                    }   
+                   player.charactState.Dodamage(i.GetComponent<CharactState>(),player.transform);
                 }
             }
         }

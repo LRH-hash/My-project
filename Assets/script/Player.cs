@@ -65,6 +65,8 @@ public class Player : entity
 
     public override void Update()
     {
+        if (Time.timeScale == 0)
+            return;
         base.Update();
         dashcooltimer -= Time.deltaTime;
         StateMachine.currentState.Update();
@@ -96,12 +98,13 @@ public class Player : entity
     }
     public void PlayerAttackCheck()
     {
+       /* AudioManager.instance.PlaySFX(2);*/
         Collider2D[] colliders = Physics2D.OverlapCircleAll(checkattack.position, checkattackRidius);
         foreach(var i in colliders)
         {
             if (i.GetComponent<enemy>() != null)
             {          
-                charactState.Dodamage(i.GetComponent<EnemyStats>());
+                charactState.Dodamage(i.GetComponent<EnemyStats>(),transform);
                ItemData_equirment weapon=Inventory.Instance.GetEquipment(equirmentType.Weapon);
                 weapon?.ExecuteitemEffect(i.transform);
             }
@@ -137,5 +140,9 @@ public class Player : entity
         movespeed = DefaultSpeed;
         jumpspeed = DefaultjumpSpeed;
         dashspeed = DefaultDashSpeed;
+    }
+    public override void SetupZeroKnockPower()
+    {
+        KnockedBackDirection = Vector2.zero;
     }
 }

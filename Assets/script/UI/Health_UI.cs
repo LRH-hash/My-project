@@ -18,6 +18,7 @@ public class Health_UI : MonoBehaviour
         stat = GetComponentInParent<CharactState>();
         entity.OnFlip += FlipUI;
         stat.UpHealth += UpdataHealthUI;
+        stat.currentHP = stat.GetHealthHP();
         UpdataHealthUI();
     }
 
@@ -35,9 +36,15 @@ public class Health_UI : MonoBehaviour
         slider.maxValue = stat.GetHealthHP();
         slider.value = stat.currentHP;
     }
-    public void OnDisable()
+/*    public void OnDisable()
     {
         entity.OnFlip -= FlipUI;
         stat.UpHealth -= UpdataHealthUI;
     }
+    public void OnEnable()
+    {
+        entity.OnFlip += FlipUI;
+        stat.UpHealth += UpdataHealthUI;
+        UpdataHealthUI();
+    }*/
 }

@@ -11,6 +11,8 @@ public class DieState : PlayerState
     public override void Enter()
     {
         base.Enter();
+        UI.instance.DieSwitch();
+        GameManager.instance.currencyAmount = PlayerManager.instance.currentSouls;
     }
 
     public override void Exit()

@@ -109,7 +109,7 @@ public class enemy : entity
         {
             if (i.GetComponent<Player>() != null)
             {
-                charactState.Dodamage(i.GetComponent<PlayerStats>());           
+                charactState.Dodamage(i.GetComponent<PlayerStats>(),transform);           
             }
         }
     }

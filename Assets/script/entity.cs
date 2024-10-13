@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using DG.Tweening;
+using Cinemachine;
 public class entity : MonoBehaviour
 {
     public Animator anim;
@@ -21,6 +22,8 @@ public class entity : MonoBehaviour
     public float KnockedTime;
     public SpriteRenderer sr;
     public CharactState charactState;
+    public ParticleSystem DustFX;
+    public int knockBackDir { get; private set; }
     public CapsuleCollider2D cd { get; private set; }
     // Start is called before the first frame update
 
@@ -33,7 +36,6 @@ public class entity : MonoBehaviour
         charactState = GetComponent<CharactState>();
         cd = GetComponent<CapsuleCollider2D>();
     }
-
     // Update is called once per frame
     public virtual  void Update()
     {
@@ -96,12 +98,25 @@ public class entity : MonoBehaviour
     {
         anim.speed = 1;
     }
+    public virtual void SetKnockDirection(Transform _direction)
+    {
+        if (_direction.position.x > transform.position.x)
+            knockBackDir = -1;
+        else
+            knockBackDir = 1;
+    }
+    public void SetupKnockPower(Vector2 Power) => KnockedBackDirection = Power;
     public virtual IEnumerator Knock()
     {
         isknocked = true;
-        rb.velocity = new Vector2(KnockedBackDirection.x*-moveRight,KnockedBackDirection.y);
+        rb.velocity = new Vector2(KnockedBackDirection.x*knockBackDir,KnockedBackDirection.y);
         yield return new WaitForSeconds(KnockedTime);
         isknocked = false;
+        SetupZeroKnockPower();
+    }
+    public virtual void SetupZeroKnockPower()
+    {
+
     }
     public void stopattack()
     {
@@ -111,5 +126,9 @@ public class entity : MonoBehaviour
     {
         fX.StartCoroutine("FX");
         StartCoroutine("Knock");
+    }
+    public void DustEffect()
+    {
+        DustFX.Play();
     }
 }

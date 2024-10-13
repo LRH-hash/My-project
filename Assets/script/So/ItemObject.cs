@@ -32,6 +32,7 @@ public void Setitem(itemData _item,Vector2 vector2)
         }
         if (!Inventory.Instance.canAdditem()&&item.itemtype==itemType.Equipment)
         {
+            PlayerManager.instance.player.fX.creatText("Inventory full");
             rb.velocity = new Vector2(0,7);
             return;
         }

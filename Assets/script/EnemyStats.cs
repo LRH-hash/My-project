@@ -8,10 +8,12 @@ public class EnemyStats : CharactState
     public int level;
     [Range(0, 1)]
     public float Percentage = 0.3f;
+    public Stat enemySoulAmount;
 
     // Start is called before the first frame update
     public override void Start()
     {
+        enemySoulAmount.SetDefaultValue(100);
         ApplyLevelModify();
         base.Start();
         enemy = GetComponent<enemy>();
@@ -24,6 +26,7 @@ public class EnemyStats : CharactState
         Modify(critchance);
         Modify(critPower);
         Modify(MagicResistence);
+        Modify(enemySoulAmount);
         //下方待选，数值膨胀；
   /*      Modify(fireDamage);
         Modify(iceDamage);
@@ -57,9 +60,10 @@ public class EnemyStats : CharactState
     {
         base.Die();
         enemy.Die();
-        //由于人物并没有取消碰撞器，所以会出现多次死亡的现象；
+       if(isDie==false)
         drop.GenerateDrop();
         enemy.isDie = true;
         isDie = true;
+        PlayerManager.instance.currentSouls += enemySoulAmount.GetValue();
     }
 }

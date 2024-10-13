@@ -13,6 +13,7 @@ public class DashState : PlayerState
         base.Enter();
         statetimer = player.dashduringtime;
         skill.clone.CreateCloneOnDashStart() ;
+        player.charactState.MakeInvincible(true);
 
     }
 
@@ -23,7 +24,7 @@ public class DashState : PlayerState
         player.SetVelocity(0, rb.velocity.y);
         player.dashcooltimer = player.dashwaittime;
         skill.clone.CreateCloneOnDashEnd();
-
+        player.charactState.MakeInvincible(false);
     }
 
 
@@ -45,6 +46,6 @@ public class DashState : PlayerState
             StateMachine.ChangeState(player.idolState);
         
         }
-      
+        player.fX.CreateAfterImage();
     }
 }

@@ -10,6 +10,8 @@ public class SkillManager : MonoBehaviour
     public Sword_Skill Sword { get; private set; }
     public Skill_BlackHole blackHole { get; private set; }
     public Cyrstal_Skill cyrstal { get; private set; }
+    public Parry_Skill parry { get; private set; }
+    public Dogge_Skill Dogge { get; private set; }
     private void Awake()
     {
         if (instance != null)
@@ -25,6 +27,8 @@ public class SkillManager : MonoBehaviour
         Sword = GetComponent<Sword_Skill>();
         blackHole = GetComponent<Skill_BlackHole>();
         cyrstal = GetComponent<Cyrstal_Skill>();
+        parry = GetComponent<Parry_Skill>();
+        Dogge = GetComponent<Dogge_Skill>();
     }
     // Start is called before the first frame update
     void Start()

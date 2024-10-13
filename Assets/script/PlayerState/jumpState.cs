@@ -24,7 +24,7 @@ public class jumpState : PlayerState
     public override void Update()
     {
         base.Update();
-      
+        player.fX.CreateAfterImage();
         if (rb.velocity.y < 0)
             StateMachine.ChangeState(player.fallstate);
         if (player.iswallGround() && xinput != 0)

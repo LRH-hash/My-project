@@ -53,5 +53,6 @@ public class Thunder_Controller : MonoBehaviour
             return;
         Target.ApplyShock(true);
         Target.Takedamage(damage);
+        Target.Fx.creatText(damage.ToString(), Color.yellow);
     }
 }

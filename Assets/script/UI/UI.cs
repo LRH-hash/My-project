@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using TMPro;
 public class UI : MonoBehaviour
 {
+    public static UI instance { get; private set; }
     public ItemToolTip itemtip;
     public StatToolTip stattip;
     public GameObject skillTree;
@@ -12,11 +13,21 @@ public class UI : MonoBehaviour
     public GameObject option;
     public UI_CraftWindow CraftWindow;
     public UI_SkillTooltip skilltooltip;
+    public GameObject InGameUI;
+    public GameObject FadeUI;
+    public GameObject die;
+    public GameObject tryAgainButton;
+    private void Awake()
+    {
+        instance = this;
+    }
     private void Start()
     {
-        SwitchTo(null);
+        FadeUI.SetActive(true);
+        SwitchTo(InGameUI);
         itemtip.gameObject.SetActive(false);
         stattip.gameObject.SetActive(false);
+   
     }
     private void Update()
     {
@@ -43,10 +54,22 @@ public class UI : MonoBehaviour
     {
         for(int i=0;i<transform.childCount;i++)
         {
-            transform.GetChild(i).gameObject.SetActive(false);
+            if(transform.GetChild(i).GetComponent<UI_FadeScene>()==false)
+             transform.GetChild(i).gameObject.SetActive(false);
         }
         if(_menu!=null)
         _menu.SetActive(true);
+        if (GameManager.instance != null)
+        {
+            if (_menu == InGameUI)
+            {
+                GameManager.instance.GamePaUse(false);
+            }
+            else
+            {
+                GameManager.instance.GamePaUse(true);
+            }
+        }
     }
     public void SwitchWithKeyTO(GameObject _menu)
     {
@@ -54,8 +77,24 @@ public class UI : MonoBehaviour
         {
             _menu.SetActive(false);
             itemtip.HideTip();
+            stattip.HideTip();
+            SwitchTo(InGameUI);
             return;
         }
+
         SwitchTo(_menu);
     }
+    public void DieSwitch()
+    {
+        FadeUI.GetComponent<UI_FadeScene>().FadeOut();
+        StartCoroutine("Die");    
+    }
+    public IEnumerator Die()
+    {
+        yield return new WaitForSeconds(1.2f);
+        die.SetActive(true);
+        yield return new WaitForSeconds(1.2f);
+        tryAgainButton.SetActive(true);
+    }
+    public void TryAgain() => GameManager.instance.GameAgain();
 }

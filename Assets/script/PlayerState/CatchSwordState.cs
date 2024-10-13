@@ -22,8 +22,9 @@ public class CatchSwordState : PlayerState
         {
             player.FlipController();
         }
-
-     /*   rb.velocity = new Vector2(player.swordReturnImpact * -player.facingDir, rb.velocity.y);//用rb.velocity设置速度即可（不用SetVelocity因为这回导致角色翻转，而角色只是朝着面向的反方向移动*/
+        player.DustEffect();
+        player.fX.ScreemShake(player.fX.shakeSword);
+        /*   rb.velocity = new Vector2(player.swordReturnImpact * -player.facingDir, rb.velocity.y);//用rb.velocity设置速度即可（不用SetVelocity因为这回导致角色翻转，而角色只是朝着面向的反方向移动*/
     }
 
     public override void Exit()

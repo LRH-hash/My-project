@@ -51,6 +51,8 @@ public class CharactState : MonoBehaviour
     public GameObject ThunderPrefab;
     public bool isDie = false;
     public ItemDrop drop;
+    public bool Invincible;
+    public int totalDamage;
     // Start is called before the first frame update
     public virtual void Start()
     {
@@ -77,6 +79,7 @@ public class CharactState : MonoBehaviour
         {
             FireDamageTimer = FireDamageCoolDownTime;
             DecreaseHealthBy(IgnitedDamage);
+            Fx.creatText(IgnitedDamage.ToString(), Color.red);
             if (currentHP < 0&&isDie)
                 Die();
         }
@@ -160,18 +163,35 @@ public class CharactState : MonoBehaviour
         Fx.ShockFor(4);
     }
 
-    public void MagicDamage(CharactState stat)
+    public void MagicDamage(CharactState stat,Transform magicDirection)
     {
+        stat.GetComponent<entity>().SetKnockDirection(magicDirection);
         int _FireDamage = fireDamage.GetValue();
         int _IceDamage = iceDamage.GetValue();
         int _lightDamage = lightDamage.GetValue();
         int totalMagicDamage = CheckMagicResistence(stat, _FireDamage, _IceDamage, _lightDamage);
-        stat.Takedamage(totalMagicDamage);
         if (Mathf.Max(_FireDamage, _IceDamage, _lightDamage) <= 0)
             return;
         bool canApplyignited = _FireDamage > _IceDamage && _FireDamage > _lightDamage;
         bool canChilled = _IceDamage > _FireDamage && _IceDamage > _lightDamage;
         bool canShocked = _lightDamage > _FireDamage && _lightDamage > _IceDamage;
+        stat.Takedamage(totalMagicDamage);
+        if (canApplyignited)
+        {
+            stat.Fx.creatText(totalMagicDamage.ToString(), Color.red);
+        }
+        else if (canChilled)
+        {
+            stat.Fx.creatText(totalMagicDamage.ToString(), Color.blue);
+        }
+        else if (canShocked)
+        {
+            stat.Fx.creatText(totalMagicDamage.ToString(), Color.yellow);
+        }
+        else
+        {
+            stat.Fx.creatText(totalMagicDamage.ToString());
+        }
 
         while (!canApplyignited&&!canChilled&&!canShocked)
         {
@@ -191,7 +211,9 @@ public class CharactState : MonoBehaviour
             }
         }
         if (canApplyignited)
-           stat.IgnitedDamage = (int)(_FireDamage * 0.2f);
+        {          
+            stat.IgnitedDamage = (int)(_FireDamage * 0.2f);
+        }
         if (canShocked&&stat.isshocked)
         stat.ThunderDamage =(int)(lightDamage.GetValue() * 0.5f);
         stat.ApplyAllment(canApplyignited, canChilled, canShocked);
@@ -205,14 +227,23 @@ public class CharactState : MonoBehaviour
         return totalMagicDamage;
     }
 
-    public virtual void Dodamage(CharactState _stat)
+    public virtual void Dodamage(CharactState _stat,Transform attackPosition)
     {
+        bool critical = false;
+        if (Invincible)
+            return;
         if (CanAvoidAttack(_stat))
             return;
+        _stat.GetComponent<entity>().SetKnockDirection(attackPosition);
         int totalDamage = Damage.GetValue() + Strength.GetValue();
         if (canCrit())
+        {
             totalDamage = calculateCriticalDamge(totalDamage);
+            critical = true;
+        }
+        Fx.CreateHitFx(_stat.transform,critical);
       totalDamage = CheckArmor(_stat, totalDamage);
+        _stat.Fx.creatText(totalDamage.ToString());
         _stat.Takedamage(totalDamage);
     }
 
@@ -229,14 +260,17 @@ public class CharactState : MonoBehaviour
         totalDamage = Mathf.Clamp(totalDamage, 0, int.MaxValue);
         return totalDamage;
     }
-
+   public virtual void OnEvasion()
+    {
+    }
    public virtual bool CanAvoidAttack(CharactState _stat)
     {
         int Avoidtotal = _stat.agality.GetValue() + _stat.evasion.GetValue();
         if (_stat.isshocked)
-            Avoidtotal += 20;
+            Avoidtotal -= 20;
         if (Random.Range(0, 100) < Avoidtotal)
         {
+            _stat.OnEvasion();
             return true;
         }
         else
@@ -246,11 +280,13 @@ public class CharactState : MonoBehaviour
     public virtual void Takedamage(int _damage)
     {
         DecreaseHealthBy(_damage);
+        GetComponent<entity>().damageEffect();
         if (currentHP <= 0&&!isDie)
             Die();
     }
     public virtual void IncreaseHealthBy(int _damage)
     {
+
         currentHP += _damage;
         if(currentHP>GetHealthHP())
         {
@@ -260,7 +296,6 @@ public class CharactState : MonoBehaviour
     }
     public virtual void DecreaseHealthBy(int _damage)
     {
-        GetComponent<entity>().damageEffect();
         currentHP -= _damage;
         UpHealth?.Invoke();
     }
@@ -304,4 +339,5 @@ public class CharactState : MonoBehaviour
         else if (statsType == StatsType.lightDamage) return lightDamage;
         return null;
     }
+    public void MakeInvincible(bool _invincible) => Invincible = _invincible;
 }

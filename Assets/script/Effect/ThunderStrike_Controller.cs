@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ThunderStrike_Controller : MonoBehaviour
 {
-    GameObject player;
+    public GameObject player;
     private void Awake()
     {
         player = GameObject.Find("Player");
@@ -14,7 +14,7 @@ public class ThunderStrike_Controller : MonoBehaviour
     {
         if(collision.GetComponent<enemy>()!=null)
         {
-            player.GetComponent<PlayerStats>().MagicDamage(collision.GetComponent<EnemyStats>());
+            player.GetComponent<PlayerStats>().MagicDamage(collision.GetComponent<EnemyStats>(),transform);
         }
     }
 }

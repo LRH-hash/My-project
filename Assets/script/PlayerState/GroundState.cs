@@ -22,10 +22,11 @@ public class GroundState : PlayerState
     public override void Update()
     {
         base.Update();
-        if(Input.GetKeyDown(KeyCode.R))
+        if(Input.GetKeyDown(KeyCode.R)&&SkillManager.instance.blackHole.cooldowntimer < 0 )
         {
             StateMachine.ChangeState(player.BlackholeState);
         }
+
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             StateMachine.ChangeState(player.primaryattackstate);
@@ -41,7 +42,7 @@ public class GroundState : PlayerState
            
             StateMachine.ChangeState(player.jumpstate);
         }
-        if(Input.GetKeyDown(KeyCode.Q))
+        if(Input.GetKeyDown(KeyCode.Q)&&SkillManager.instance.parry.parryUnlocked)
         {
             StateMachine.ChangeState(player.counterAttackState);
         }
@@ -55,8 +56,11 @@ public class GroundState : PlayerState
         if (player.Sword == null)
             return true;
         else
+        {
+            player.Sword.GetComponent<Sword_SkillController>().PierceSwitchPosition(player.transform);
             player.Sword.GetComponent<Sword_SkillController>().MoveToPlayer();
             return false;
+        }
 
     }
 }

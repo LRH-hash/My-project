@@ -30,7 +30,7 @@ public class Crystal_Skill_Controller : MonoBehaviour
         {
             transform.position = Vector2.MoveTowards(transform.position, enemyTransform.position, movespeed * Time.deltaTime);
             {
-                if (Vector2.Distance(transform.position, enemyTransform.position) < 0.5f)
+                if (Vector2.Distance(transform.position, enemyTransform.position) < 0.6f)
                 {
                     canmove = false;
                     FinishExplosion();
@@ -79,7 +79,7 @@ public class Crystal_Skill_Controller : MonoBehaviour
         {
             if (i.GetComponent<enemy>() != null)
             {
-                PlayerManager.instance.player.charactState.MagicDamage(i.GetComponent<CharactState>());
+                PlayerManager.instance.player.charactState.MagicDamage(i.GetComponent<CharactState>(),transform);
                 ItemData_equirment equirment = Inventory.Instance.GetEquipment(equirmentType.Amult);
                 if (equirment != null)
                     equirment.ExecuteitemEffect(i.transform);
