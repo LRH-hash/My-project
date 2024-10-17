@@ -14,9 +14,11 @@ public class Clone_Controller : MonoBehaviour
     public bool canDuplicateClone;
     public float changeDulicateClone;
     public float faceDir = 1;
+    public AudioSource audiosource;
     // Start is called before the first frame update
     private void Awake()
     {
+        audiosource = GetComponent<AudioSource>();
         sc = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
     }
@@ -47,6 +49,8 @@ public class Clone_Controller : MonoBehaviour
         Collider2D[] colliders = Physics2D.OverlapCircleAll(checkattack.position, checkattackRidius);
         float enemyDirection = Mathf.Infinity;
         Transform closeEnemey = null;
+       audiosource.clip = AudioManager.instance.sfx[1];
+       audiosource.Play();
         foreach (var i in colliders)
         {
             if (i.GetComponent<enemy>() != null)
@@ -76,6 +80,8 @@ public class Clone_Controller : MonoBehaviour
             if (i.GetComponent<enemy>() != null)
             {
                 PlayerManager.instance.player.charactState.Dodamage(i.GetComponent<CharactState>(),transform);
+                audiosource.clip = AudioManager.instance.sfx[2];
+                audiosource.Play();
                 if (canDuplicateClone)
                 {
                     if (Random.Range(0, 100) < changeDulicateClone)

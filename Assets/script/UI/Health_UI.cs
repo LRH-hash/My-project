@@ -9,6 +9,7 @@ public class Health_UI : MonoBehaviour
     public RectTransform Recttransform;
     public Slider slider;
     public CharactState stat;
+    public bool isplay = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -38,13 +39,11 @@ public class Health_UI : MonoBehaviour
     }
 /*    public void OnDisable()
     {
-        entity.OnFlip -= FlipUI;
-        stat.UpHealth -= UpdataHealthUI;
-    }
-    public void OnEnable()
-    {
-        entity.OnFlip += FlipUI;
-        stat.UpHealth += UpdataHealthUI;
-        UpdataHealthUI();
+        if (!isplay)
+        {
+            entity.OnFlip -= FlipUI;
+            stat.UpHealth -= UpdataHealthUI;
+        }
     }*/
+
 }

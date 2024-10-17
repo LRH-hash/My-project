@@ -52,10 +52,14 @@ public class CharactState : MonoBehaviour
     public bool isDie = false;
     public ItemDrop drop;
     public bool Invincible;
+    public bool PrefectDefend;
+    public bool Defend;
     public int totalDamage;
+    public GameObject health_UI;
     // Start is called before the first frame update
     public virtual void Start()
     {
+        health_UI = GetComponentInChildren<Health_UI>().gameObject;
         Fx = GetComponent<hitFX>();
         critPower.SetDefaultValue(150);
         currentHP = GetHealthHP();
@@ -80,7 +84,7 @@ public class CharactState : MonoBehaviour
             FireDamageTimer = FireDamageCoolDownTime;
             DecreaseHealthBy(IgnitedDamage);
             Fx.creatText(IgnitedDamage.ToString(), Color.red);
-            if (currentHP < 0&&isDie)
+            if (currentHP < 0&&!isDie)
                 Die();
         }
     }
@@ -165,6 +169,8 @@ public class CharactState : MonoBehaviour
 
     public void MagicDamage(CharactState stat,Transform magicDirection)
     {
+        if(stat.Invincible)
+            return;
         stat.GetComponent<entity>().SetKnockDirection(magicDirection);
         int _FireDamage = fireDamage.GetValue();
         int _IceDamage = iceDamage.GetValue();
@@ -230,8 +236,17 @@ public class CharactState : MonoBehaviour
     public virtual void Dodamage(CharactState _stat,Transform attackPosition)
     {
         bool critical = false;
-        if (Invincible)
+        if (_stat.Invincible)
+        {
             return;
+        }
+        if(_stat.PrefectDefend)
+        {
+            _stat.GetComponent<entity>().audiosource.clip = AudioManager.instance.sfx[2];
+            _stat.GetComponent<entity>().audiosource.Play();
+            return;
+        }
+
         if (CanAvoidAttack(_stat))
             return;
         _stat.GetComponent<entity>().SetKnockDirection(attackPosition);
@@ -243,10 +258,19 @@ public class CharactState : MonoBehaviour
         }
         Fx.CreateHitFx(_stat.transform,critical);
       totalDamage = CheckArmor(_stat, totalDamage);
-        _stat.Fx.creatText(totalDamage.ToString());
-        _stat.Takedamage(totalDamage);
+        if (_stat.Defend)
+        {
+            _stat.GetComponent<entity>().audiosource.clip = AudioManager.instance.sfx[2];
+            _stat.GetComponent<entity>().audiosource.Play();
+            _stat.Takedamage((int)(totalDamage*0.5f));
+            _stat.Fx.creatText(((int)(totalDamage * 0.5f)).ToString());
+        }
+        else
+        {
+            _stat.Takedamage(totalDamage);
+            _stat.Fx.creatText(totalDamage.ToString());
+        }
     }
-
     public virtual int CheckArmor(CharactState _stat, int totalDamage)
     {
         if (isChilled)
@@ -315,7 +339,7 @@ public class CharactState : MonoBehaviour
     }
     public virtual void Die()
     {
-       
+        health_UI.SetActive(false);
     }
     public int GetHealthHP()
     {
@@ -340,4 +364,6 @@ public class CharactState : MonoBehaviour
         return null;
     }
     public void MakeInvincible(bool _invincible) => Invincible = _invincible;
+    public void CanVisible()=> health_UI.gameObject.SetActive(true);
+    public void CannotVisible() => health_UI.gameObject.SetActive(false);
 }

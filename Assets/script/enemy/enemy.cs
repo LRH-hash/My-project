@@ -1,9 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(hitFX))]
+[RequireComponent(typeof(CharactState))]
+[RequireComponent(typeof(entity))]
+[RequireComponent(typeof(ItemDrop))]
+[RequireComponent(typeof(CapsuleCollider2D))]
 public class enemy : entity
 {
+    public bool stun;
     public float moveSpeed = 3;
     public LayerMask checkplayer;
     public float checkPlayerDistance;
@@ -20,6 +26,7 @@ public class enemy : entity
     public float DefaultSpeed;
     public GameObject CountImage;
     public bool isDie = false;
+    public bool Trigger;
 
     public enemyStateMachine EnemyStateMachine { get; private set; }
     protected virtual void Awake()
@@ -43,6 +50,7 @@ public class enemy : entity
         EnemyStateMachine.currentState.Update();
     }
     public bool CheckPlayer() => Physics2D.Raycast(transform.position, Vector2.right*moveRight, checkPlayerDistance, checkplayer);
+    public bool ISTrigger() => Trigger = true;
     public virtual IEnumerator FreezeTimeEnemy(float _Second)
     {
         FreezeTimer(true);
@@ -102,13 +110,17 @@ public class enemy : entity
         else
             return false;
     }
-    public void EnemyAttackCheck()
+    public virtual void EnemyAttackCheck()
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(checkattack.position, checkattackRidius);
         foreach (var i in colliders)
         {
             if (i.GetComponent<Player>() != null)
             {
+                anim.speed = 0;
+                Invoke("ReturnAnimSpeed", stopanimtime);
+                audiosource.clip = AudioManager.instance.sfx[2];
+                audiosource.Play();
                 charactState.Dodamage(i.GetComponent<PlayerStats>(),transform);           
             }
         }

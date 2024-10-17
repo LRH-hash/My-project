@@ -147,6 +147,10 @@ public class hitFX : MonoBehaviour
 
         Destroy(newgameObject, .5f);
     }
+    public void MakeNotTransparent(bool _transparent)
+    {
+       
+    }
 }
 
 

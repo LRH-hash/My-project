@@ -5,6 +5,7 @@ using UnityEngine;
 public class CounterAttackState : PlayerState
 {
     public bool isoneclone;
+    
     public CounterAttackState(Player _player, PlayerStateMachine _playerStateMachine, string _animname) : base(_player, _playerStateMachine, _animname)
     {
     }
@@ -16,8 +17,7 @@ public class CounterAttackState : PlayerState
     {
         base.Enter();
         isoneclone = true;
-        player.isattack = true;
-        statetimer = player.counterattacktimer;      
+        player.isattack = true;     
         player.anim.SetBool("successfulcounterattack", false);
         rb.velocity = Vector2.zero;
     }
@@ -25,6 +25,8 @@ public class CounterAttackState : PlayerState
     public override void Exit()
     {
         base.Exit();
+        player.charactState.Defend = false;
+        player.charactState.PrefectDefend = false;
     }
 
     public override void Update()
@@ -37,8 +39,10 @@ public class CounterAttackState : PlayerState
             {      
                if( i.GetComponent<enemy>().CanStunWindow())
                 {
-                    statetimer = 10f;
+                    player.stoptime();
                     player.anim.SetBool("successfulcounterattack", true);
+                    player.audiosource.clip = AudioManager.instance.sfx[2];
+                    player.audiosource.Play();
                     SkillManager.instance.parry.CanUseSkill();
                     if(isoneclone)
                     {
@@ -49,9 +53,13 @@ public class CounterAttackState : PlayerState
                 }
             }
         }
-        if (statetimer < 0 || player.isattack ==false)
+        if (Input.GetKeyUp(KeyCode.Q))
         {
             StateMachine.ChangeState(player.idolState);
         }
+    }
+    public void successfultanfan(enemy _enemy)
+    {
+        _enemy.ReturnAnimSpeed();
     }
 }

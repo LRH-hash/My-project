@@ -8,7 +8,6 @@ public class UI_InGame : MonoBehaviour
 {
     [SerializeField] private PlayerStats playerStats;
     [SerializeField] Slider slider;
-
     [SerializeField] private Image dashImage;
     [SerializeField] private Image parryImage;
     [SerializeField] private Image crystalImage;

@@ -103,7 +103,11 @@ public class Player : entity
         foreach(var i in colliders)
         {
             if (i.GetComponent<enemy>() != null)
-            {          
+            {
+                anim.speed =0;
+                Invoke("ReturnAnimSpeed", stopanimtime);
+               audiosource.clip = AudioManager.instance.sfx[2];
+                audiosource.Play();
                 charactState.Dodamage(i.GetComponent<EnemyStats>(),transform);
                ItemData_equirment weapon=Inventory.Instance.GetEquipment(equirmentType.Weapon);
                 weapon?.ExecuteitemEffect(i.transform);
@@ -133,7 +137,6 @@ public class Player : entity
         anim.speed = (1 - _SlowPercent);
         Invoke("ReturnDefault", DurinyTIme);
     }
-
     public override void ReturnDefault()
     {
         base.ReturnDefault();
@@ -144,5 +147,16 @@ public class Player : entity
     public override void SetupZeroKnockPower()
     {
         KnockedBackDirection = Vector2.zero;
+    }
+    public void PrefectDefend()
+    {
+        if (charactState.PrefectDefend)
+            charactState.PrefectDefend = false;
+        else
+            charactState.PrefectDefend = true;
+    }
+    public void Defend()
+    {
+            charactState.Defend = true;
     }
 }

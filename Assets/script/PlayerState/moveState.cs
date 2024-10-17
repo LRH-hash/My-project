@@ -11,7 +11,10 @@ public class moveState : GroundState
     public override void Enter()
     {
         base.Enter();
-       
+        player.audiosource.clip = AudioManager.instance.sfx[3];
+        player.audiosource.Play();
+        player.audiosource.loop = true;
+
     }
     public override void Update()
     {
@@ -22,10 +25,13 @@ public class moveState : GroundState
             StateMachine.ChangeState(player.idolState);
         }
 
+
     }
     public override void Exit()
     {
         base.Exit();
+        player.audiosource.Stop();
+        player.audiosource.loop = false;
     }
 
 

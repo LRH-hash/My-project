@@ -6,18 +6,18 @@ using UnityEngine;
 
 public class SkeletonDieState : enemyState
 {
-    public skeleton skeleton;
+    public skeleton enemy;
     // Start is called before the first frame update
     public SkeletonDieState(enemy _enemy, enemyStateMachine _enemyStateMachine, string _animname,skeleton _skeleton) : base(_enemy, _enemyStateMachine, _animname)
     {
-        skeleton = _skeleton;
+        enemy = _skeleton;
     }
 
     public override void Enter()
     {
         base.Enter(); 
         statetimer = .1f;
-        skeleton.FreezeTimer(false);
+        enemy.FreezeTimer(false);
     }
 
     public override void Update()
@@ -25,7 +25,7 @@ public class SkeletonDieState : enemyState
         base.Update();
         if(statetimer<0)
         {
-            skeleton.rb.velocity = Vector2.zero;
+            enemy.rb.velocity = Vector2.zero;
             
         }
        

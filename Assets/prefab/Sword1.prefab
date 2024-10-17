@@ -62,7 +62,7 @@ MonoBehaviour:
   bounceMaxCount: 10
   bounceSpeed: 20
   PierceMaxCount: 0
-  FreezeTime: 0
+  FreezeTime: 0.5
   spinDuringTime: 0
   hitcooldown: 0
   hitDuringTime: 0

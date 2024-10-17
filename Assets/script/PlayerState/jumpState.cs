@@ -13,6 +13,8 @@ public class jumpState : PlayerState
     {
         base.Enter();
         player.SetVelocity(rb.velocity.x, player.jumpspeed);
+        player.audiosource.clip = AudioManager.instance.sfx[5];
+        player.audiosource.Play();
     }
 
     public override void Exit()

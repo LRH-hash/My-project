@@ -72,7 +72,7 @@ public class GameManager : MonoBehaviour, ISaveManager
 
     private void PlacePlayerAtClosestCheckpoint(GameData _data)//传送至最近检查点函数
     {
-        if (_data.closestCheckpointId ==" ")
+        if (_data.closestCheckpointId ==null)
         {
             PlayerManager.instance.player.transform.position = new Vector3(20, 2, 0);
             return;
@@ -90,11 +90,8 @@ public class GameManager : MonoBehaviour, ISaveManager
     public void SaveData(ref GameData _data)
     {
         _data.currencyPosition = PlayerManager.instance.player.transform.position;
-        _data.currencyAmount = PlayerManager.instance.currentSouls;
-        if (closestCheckpointId != " ")
-        {
-            _data.closestCheckpointId = FindClosestCheckpoint().id;           
-        }//Save后掉用
+        _data.currencyAmount = PlayerManager.instance.currentSouls;  
+        _data.closestCheckpointId = FindClosestCheckpoint().id;                 
         _data.checkpoints.Clear();
         foreach (Checkpoint checkpoint in checkpoints)
         {

@@ -5,8 +5,10 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager instance;
-    public AudioSource[] sfx;
-    public AudioSource[] bgm;
+    public AudioClip[] sfx;
+    public AudioClip[] bgm;
+    public AudioSource Sfx;
+    public AudioSource Bgm;
     public bool PlayBgM;
     public int bgmindex;
     private void Awake()
@@ -17,19 +19,14 @@ public class AudioManager : MonoBehaviour
             instance = this;
     }
 
-
+    private void Start()
+    {
+    
+    }
     // Update is called once per frame
     void Update()
     {
-        if(!PlayBgM)
-        {
-            StopAllBGM();
-        }
-        else
-        {
-            if (!bgm[bgmindex].isPlaying)
-                bgm[bgmindex].Play();
-        }
+  
     }
     public void RandomBgm()
     {
@@ -38,25 +35,18 @@ public class AudioManager : MonoBehaviour
     }
     public void PlaySFX(int _sfxindex)
     {
-        sfx[_sfxindex].pitch = Random.Range(0.85f, 1.1f);
-            sfx[_sfxindex].Play();
+        Sfx.clip = sfx[_sfxindex];
     }
     public void StopSFX(int _sfxindex)
     {
-        if (_sfxindex < sfx.Length)
-            sfx[_sfxindex].Stop();
+        Sfx.Stop();
     }
     public void PlayBGM(int _BGMindex)
     {
-        bgmindex = _BGMindex;
-        StopAllBGM();
-        bgm[_BGMindex].Play();
+        Bgm.clip = bgm[_BGMindex];     
     }
-    public void StopAllBGM()
+    public void StopBGM()
     {
-        for(int i=0;i<bgm.Length;i++)
-        {
-            bgm[i].Stop();
-        }
+        Bgm.Stop();
     }
 }

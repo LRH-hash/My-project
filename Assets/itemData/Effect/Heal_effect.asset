@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: Heal_effect
   m_EditorClassIdentifier: 
   healPercent: 0.2
+  healfx: {fileID: 5586345867712365659, guid: d07fe383e1863de4095dc03249ff2e48, type: 3}

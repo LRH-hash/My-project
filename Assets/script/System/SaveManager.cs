@@ -53,8 +53,6 @@ public class SaveManager : MonoBehaviour
         {
             saveManager.LoadData(gameData);
         }
-
-        Debug.Log("Loaded currency " + gameData.currency);
     }
 
     public void SaveGame()/*循环调用所有的找到脚本的LoadData和SaveData到，这样便可以将所有的数据汇聚到gameData中，并从中拿到data*/

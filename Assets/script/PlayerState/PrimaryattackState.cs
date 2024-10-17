@@ -23,6 +23,8 @@ public class PrimaryattackState : PlayerState
             attackcombo = 0;
   ;
         }
+        player.audiosource.clip = AudioManager.instance.sfx[1];
+        player.audiosource.Play();
         player.anim.SetFloat("attackcombo", attackcombo);
         #region attackdir 控制攻击方向，但这里攻击完直接进入休闲状态，没用到留到后续使用
         float attackdir = player.moveRight;

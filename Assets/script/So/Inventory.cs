@@ -6,7 +6,6 @@ using UnityEditor;
 public class Inventory : MonoBehaviour,ISaveManager
 {
     public static Inventory Instance { get; private set; }
-    public List<itemData>  Listitems;
     public List<itemData> StartEquipmentLIst;
     public List<InventoryItem> Inventoryitem;
     public Dictionary<itemData, InventoryItem> InventoryDictionary;
@@ -379,12 +378,13 @@ public class Inventory : MonoBehaviour,ISaveManager
     public void FillupItemdatabase() => itemDataBase = new List<itemData>(GetItemDataBase());
     private List<itemData> GetItemDataBase()//获得所有的equipmentData的IdName和data的函数
     {
-        itemDataBase = new List<itemData>();
+       List<itemData> itemDataBase = new List<itemData>();
         string[] assetsNames = AssetDatabase.FindAssets("", new[] { "Assets/itemData/Item" });//这是根据unity的文件夹走的，也就是拿到了所有的Equipment的文件名IdName
         foreach (string SOName in assetsNames)
         {
             var SOpath = AssetDatabase.GUIDToAssetPath(SOName);//这是通过找到的文件名拿到对应的位置
             var itemData = AssetDatabase.LoadAssetAtPath<itemData>(SOpath);//这是实打实的通过位置转换拿到相应的数据
+            if(itemData!=null)
             itemDataBase.Add(itemData);//将数据填到itemDataBase里
         }
 

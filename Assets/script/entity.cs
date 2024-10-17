@@ -5,6 +5,10 @@ using DG.Tweening;
 using Cinemachine;
 public class entity : MonoBehaviour
 {
+    [Header("tandao")]
+    public float stopanimtime = 0.2f;
+    public float stoptimefluid = 0.1f;
+    public Vector2 knockOffset;
     public Animator anim;
     public Rigidbody2D rb;
     public LayerMask Ground;
@@ -23,12 +27,14 @@ public class entity : MonoBehaviour
     public SpriteRenderer sr;
     public CharactState charactState;
     public ParticleSystem DustFX;
-    public int knockBackDir { get; private set; }
+    public AudioSource audiosource;
+    public int knockBackDir { get; private set; } 
     public CapsuleCollider2D cd { get; private set; }
     // Start is called before the first frame update
 
     public  virtual  void Start()
     {
+        audiosource = GetComponent<AudioSource>();
         sr = GetComponentInChildren<SpriteRenderer>();
         fX = GetComponent<hitFX>();
         anim = GetComponent<Animator>();
@@ -43,6 +49,24 @@ public class entity : MonoBehaviour
           Flip();
     }
     public System.Action OnFlip;
+    public void ReturnAnimSpeed()
+    {
+        anim.speed = 1;
+    }
+    public void startInvoke()
+    {
+        Invoke("ReturnAnimSpeed", stopanimtime);
+    }
+    public void stoptime()
+    {
+        Time.timeScale = 0.2f;
+        StartCoroutine("returntime");
+    }
+    public IEnumerator returntime()
+    {
+        yield return new WaitForSeconds(stoptimefluid);
+        Time.timeScale = 1;
+    }
 
     public void Settransparent(bool _transparent)
     {
@@ -109,7 +133,8 @@ public class entity : MonoBehaviour
     public virtual IEnumerator Knock()
     {
         isknocked = true;
-        rb.velocity = new Vector2(KnockedBackDirection.x*knockBackDir,KnockedBackDirection.y);
+        float xoffset = Random.Range(knockOffset.x, knockOffset.y);
+        rb.velocity = new Vector2((xoffset+KnockedBackDirection.x)*knockBackDir,KnockedBackDirection.y);
         yield return new WaitForSeconds(KnockedTime);
         isknocked = false;
         SetupZeroKnockPower();

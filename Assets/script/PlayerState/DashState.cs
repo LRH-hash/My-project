@@ -14,6 +14,8 @@ public class DashState : PlayerState
         statetimer = player.dashduringtime;
         skill.clone.CreateCloneOnDashStart() ;
         player.charactState.MakeInvincible(true);
+        player.audiosource.clip = AudioManager.instance.sfx[0];
+        player.audiosource.Play();
 
     }
 

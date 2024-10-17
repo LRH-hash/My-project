@@ -13,12 +13,15 @@ public class walljumpState : PlayerState
     {
         base.Enter();
         rb.velocity = new Vector2(-player.movespeed * player.moveRight, player.jumpspeed);
+        player.audiosource.clip = AudioManager.instance.sfx[5];
+        player.audiosource.Play();
         //有动画时待定一个时间，时间到后结束。
     }
 
     public override void Exit()
     {
         base.Exit();
+      
     }
 
     public override void Update()
